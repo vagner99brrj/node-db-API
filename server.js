@@ -36,7 +36,7 @@ app.get('/usuarios', async (req, res) => {
     }
 });
 
-// ROTA DE EDIÇÃO DE USUÁRIO (PUT)
+// ROTA DE EDIÇÃO DE USUÁRIO 
 app.put('/usuarios/:id', async (req, res) => {
     const { id } = req.params; 
     const { email, name, age } = req.body; 
@@ -69,8 +69,35 @@ app.put('/usuarios/:id', async (req, res) => {
             return res.status(404).json({ error: "Usuário não encontrado." });
         }
         
-        // Retorna erro interno do servidor
+       
         res.status(500).json({ error: "Erro ao editar usuário no banco de dados." });
+    }
+});
+
+// ROTA DE EXCLUSÃO DE USUÁRIO 
+app.delete('/usuarios/:id', async (req, res) => {
+    const { id } = req.params; 
+
+    try {
+        await prisma.user.delete({
+            where: {
+                id: id, 
+            },
+        });
+
+      
+        res.status(204).send(); 
+
+    } catch (error) {
+        console.error("Erro ao deletar usuário:", error);
+        
+        
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+        
+       
+        res.status(500).json({ error: "Erro ao deletar usuário no banco de dados." });
     }
 });
 
