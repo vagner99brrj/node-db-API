@@ -8,7 +8,7 @@ const PORT = 9000;
 app.use(express.json());
 
 // ROTA DE CRIAÇÃO DE USUÁRIO
-app.post('/usuarios', async (req, res) => {
+app.post('/usuarios/:id', async (req, res) => {
     
     try {
         await prisma.user.create({
@@ -35,6 +35,45 @@ app.get('/usuarios', async (req, res) => {
         res.status(500).json({ error: "Erro ao buscar usuários no banco de dados." });
     }
 });
+
+// ROTA DE EDIÇÃO DE USUÁRIO (PUT)
+app.put('/usuarios/:id', async (req, res) => {
+    const { id } = req.params; 
+    const { email, name, age } = req.body; 
+
+    
+    const dataToUpdate = {};
+    if (email !== undefined) dataToUpdate.email = email;
+    if (name !== undefined) dataToUpdate.name = name;
+    if (age !== undefined) dataToUpdate.age = age;
+
+    
+    if (Object.keys(dataToUpdate).length === 0) {
+        return res.status(400).json({ error: "Nenhum dado válido fornecido para atualização." });
+    }
+
+    try {
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: id, 
+            },
+            data: dataToUpdate,
+        });
+
+        res.status(200).json(updatedUser); 
+
+    } catch (error) {
+        console.error("Erro ao editar usuário:", error);
+         
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+        
+        // Retorna erro interno do servidor
+        res.status(500).json({ error: "Erro ao editar usuário no banco de dados." });
+    }
+});
+
 
 function main() { 
     try {
