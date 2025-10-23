@@ -5,12 +5,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:push":"cross-env npx prisma db push"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "prisma": "^6.18.0"
   }
 }

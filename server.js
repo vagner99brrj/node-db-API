@@ -8,19 +8,24 @@ app.use(express.json());
 
 const users = []
 
+//rota de criação de usuário
 app.post('/usuarios', (req, res) => {
 
     users.push(req.body);
 
-    res.send('OK, funcionou!');
+    res.status(201).json({ message: 'Usuário criado com sucesso!' });
 
 });
 
+//rota de listagem de usuários
 app.get('/usuarios', (req, res) => {
 
-  res.json(users);
+  res.status(200).json(users);
 
 });
 
 
 app.listen(9000);
+
+
+//
