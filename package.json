@@ -16,7 +16,8 @@
   "dependencies": {
     "@prisma/client": "^6.18.0",
     "express": "^5.1.0",
-    "mongodb": "^6.20.0"
+    "mongodb": "^6.20.0",
+    "puppeteer": "^24.29.0"
   },
   "devDependencies": {
     "cross-env": "^10.1.0",
